@@ -38,7 +38,13 @@ public class CreditCardVerificationService {
 
         updateCreditCardApplicationStatus(verificationDetails);
 
-        return VerifyCreditCardEvent.builder().verificationDetails(verificationDetails).build();
+        List<VerificationDetail> verifiedApplications = verificationDetails
+                .stream()
+                .filter(verificationDetail ->
+                        verificationDetail.getStatus().equals(ApplicationStatusEnum.APPROVED.getCode()))
+                .toList();
+
+        return VerifyCreditCardEvent.builder().verificationDetails(verifiedApplications).build();
     }
 
     private void updateCreditCardApplicationStatus(List<VerificationDetail> verificationDetails) {

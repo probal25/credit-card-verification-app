@@ -1,0 +1,31 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: credit-card-verification-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/credit_card_db?schema=credit_card_application
+    username: root
+    password: mysql
+  jpa:
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+  cloud:
+    stream:
+      function:
+        definition: verifyCreditCardEventFunction
+      bindings:
+        verifyCreditCardEventFunction-in-0:
+          destination: CreditCardApp
+          group: credit_card
+        verifyCreditCardEventFunction-out-0:
+          destination: CreditCardVerificationApp
+          group: credit_card
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
